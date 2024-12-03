@@ -1,0 +1,7 @@
+create board that has 
+add a tracker for what number move it is
+
+//when you first click, take the number
+//when you get the position, check if it will take king out of check if king is in check
+    //check if when moved, is King still in check
+    //if piece being moved is King, use new coordinates as Kings coordinates
