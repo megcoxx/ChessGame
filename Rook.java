@@ -4,7 +4,7 @@ import javax.swing.ImageIcon;
 
 public class Rook extends PlayingPieceComponent {
     public Rook(Color color) {
-        super(50, 50, color);
+        super(color);
         name = "Rook";
         if (color == Color.BLACK) {
             pieceDisplay = new ImageIcon("images/RookBlack.png").getImage();
@@ -191,5 +191,10 @@ public class Rook extends PlayingPieceComponent {
                 }
             }
         }
+    }
+
+    @Override
+    public Rook clone() {
+        return new Rook(this.color);
     }
 }

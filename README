@@ -1,7 +1,6 @@
-create board that has 
-add a tracker for what number move it is
-
-//when you first click, take the number
-//when you get the position, check if it will take king out of check if king is in check
-    //check if when moved, is King still in check
-    //if piece being moved is King, use new coordinates as Kings coordinates
+This chess game implements basic chess logic.
+The game is started by the White pieces. 
+To move: select a piece and then select the square you would like it to move to.
+If the move is invalid, it will let you know.
+If a piece is captured, it will appear on that player's "piece bank" at their side.
+To win, the King must be captured. If the King is in check, it will become highlighted red. 

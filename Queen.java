@@ -4,7 +4,7 @@ import javax.swing.ImageIcon;
 
 public class Queen extends PlayingPieceComponent {
     public Queen(Color color) {
-        super(50, 50, color);
+        super(color);
         name = "Queen";
         if (color == Color.BLACK) {
             pieceDisplay = new ImageIcon("images/QueenBlack.png").getImage();
@@ -16,190 +16,53 @@ public class Queen extends PlayingPieceComponent {
 
     @Override
     public boolean canMoveTo(int colC, int rowC, int colN, int rowN, PlayingPieceComponent[][] gameboard) {
-        if (color == Color.WHITE) {
-            if (gameboard[colN][rowN] != null) {
-                if (gameboard[colN][rowN].color == Color.WHITE) {
-                    return false;
-                }
-            }
-            if (colC == colN) {
-                if (rowC > rowN) {
-                    for (int i = rowC - 1; i >= rowN; i--) {
-                        if (gameboard[colN][i] != null) {
-                            return false;
-                        }
-                    }
-                    return true;
-                } else {
-                    for (int i = rowC + 1; i <= rowN; i++) {
-                        if (gameboard[colN][i] != null) {
-                            return false;
-                        }
-                    }
-                    return true;
-                }
-            } else if (rowC == rowN) {
-                if (colC > colN) {
-                    for (int i = colC - 1; i >= colN; i--) {
-                        if (gameboard[i][rowN] != null) {
-                            return false;
-                        }
-                    }
-                    return true;
-                } else {
-                    for (int i = colC + 1; i <= colN; i++) {
-                        if (gameboard[i][rowN] != null) {
-                            return false;
-                        }
-                    }
-                    return true;
-                }
-            } else if (Math.abs(colN - colC) == Math.abs(rowN - rowC)) {
-                if (colN - colC > 0 && rowN - rowC > 0) {
-                    // both positive
-                    // going right up
-                    int tempCol = colC + 1;
-                    int tempRow = rowC + 1;
-                    while (tempCol != colN) {
-                        if (gameboard[tempCol][tempRow] != null) {
-                            return false;
-                        }
-                        tempCol++;
-                        tempRow++;
-                    }
-                } else if (colN - colC > 0 && rowN - rowC < 0) {
-                    // positive and negative
-                    // going right down
-                    int tempCol = colC + 1;
-                    int tempRow = rowC - 1;
-                    while (tempCol != colN) {
-                        if (gameboard[tempCol][tempRow] != null) {
-                            return false;
-                        }
-                        tempCol++;
-                        tempRow--;
-                    }
-                } else if (colN - colC < 0 && rowN - rowC > 0) {
-                    // positive and negative
-                    // going left up
-                    int tempCol = colC - 1;
-                    int tempRow = rowC + 1;
-                    while (tempCol != colN) {
-                        if (gameboard[tempCol][tempRow] != null) {
-                            return false;
-                        }
-                        tempCol--;
-                        tempRow++;
-                    }
-                } else if (colN - colC < 0 && rowN - rowC < 0) {
-                    // both negative
-                    // going left down
-                    int tempCol = colC - 1;
-                    int tempRow = rowC - 1;
-                    while (tempCol != colN) {
-                        if (gameboard[tempCol][tempRow] != null) {
-                            return false;
-                        }
-                        tempCol--;
-                        tempRow--;
-                    }
-                }
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            if (gameboard[colN][rowN] != null) {
-                if (gameboard[colN][rowN].color == Color.BLACK) {
-                    return false;
-                }
-            }
-            if (colC == colN) {
-                if (rowC > rowN) {
-                    for (int i = rowC - 1; i >= rowN; i--) {
-                        if (gameboard[colN][i] != null) {
-                            return false;
-                        }
-                    }
-                    return true;
-                } else {
-                    for (int i = rowC + 1; i <= rowN; i++) {
-                        if (gameboard[colN][i] != null) {
-                            return false;
-                        }
-                    }
-                    return true;
-                }
-            } else if (rowC == rowN) {
-                if (colC > colN) {
-                    for (int i = colC - 1; i >= colN; i--) {
-                        if (gameboard[i][rowN] != null) {
-                            return false;
-                        }
-                    }
-                    return true;
-                } else {
-                    for (int i = colC + 1; i <= colN; i++) {
-                        if (gameboard[i][rowN] != null) {
-                            return false;
-                        }
-                    }
-                    return true;
-                }
-            } else if (Math.abs(colN - colC) == Math.abs(rowN - rowC)) {
-                if (colN - colC > 0 && rowN - rowC > 0) {
-                    // both positive
-                    // going right up
-                    int tempCol = colC + 1;
-                    int tempRow = rowC + 1;
-                    while (tempCol != colN) {
-                        if (gameboard[tempCol][tempRow] != null) {
-                            return false;
-                        }
-                        tempCol++;
-                        tempRow++;
-                    }
-                } else if (colN - colC > 0 && rowN - rowC < 0) {
-                    // positive and negative
-                    // going right down
-                    int tempCol = colC + 1;
-                    int tempRow = rowC - 1;
-                    while (tempCol != colN) {
-                        if (gameboard[tempCol][tempRow] != null) {
-                            return false;
-                        }
-                        tempCol++;
-                        tempRow--;
-                    }
-                } else if (colN - colC < 0 && rowN - rowC > 0) {
-                    // positive and negative
-                    // going left up
-                    int tempCol = colC - 1;
-                    int tempRow = rowC + 1;
-                    while (tempCol != colN) {
-                        if (gameboard[tempCol][tempRow] != null) {
-                            return false;
-                        }
-                        tempCol--;
-                        tempRow++;
-                    }
-                } else if (colN - colC < 0 && rowN - rowC < 0) {
-                    // both negative
-                    // going left down
-                    int tempCol = colC - 1;
-                    int tempRow = rowC - 1;
-                    while (tempCol != colN) {
-                        if (gameboard[tempCol][tempRow] != null) {
-                            return false;
-                        }
-                        tempCol--;
-                        tempRow--;
-                    }
-                }
-                return true;
-            } else {
-                return false;
-            }
+        if (colC == colN && rowC == rowN) {
+            return false;
         }
+
+        if (gameboard[colN][rowN] != null && gameboard[colN][rowN].color == this.color) {
+            return false;
+        }
+
+        if (colC == colN || rowC == rowN) {
+            int colStep = Integer.signum(colN - colC);
+            int rowStep = Integer.signum(rowN - rowC);
+
+            int currentCol = colC + colStep;
+            int currentRow = rowC + rowStep;
+
+            while (currentCol != colN || currentRow != rowN) {
+                if (gameboard[currentCol][currentRow] != null) {
+                    return false;
+                }
+                currentCol += colStep;
+                currentRow += rowStep;
+            }
+            return true;
+        }
+
+        if (Math.abs(colN - colC) == Math.abs(rowN - rowC)) {
+            int colStep = Integer.signum(colN - colC);
+            int rowStep = Integer.signum(rowN - rowC);
+
+            int currentCol = colC + colStep;
+            int currentRow = rowC + rowStep;
+
+            while (currentCol != colN || currentRow != rowN) {
+                if (gameboard[currentCol][currentRow] != null) {
+                    return false;
+                }
+                currentCol += colStep;
+                currentRow += rowStep;
+            }
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public Queen clone() {
+        return new Queen(this.color);
     }
 }

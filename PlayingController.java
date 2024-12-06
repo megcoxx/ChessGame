@@ -16,11 +16,8 @@ public class PlayingController {
 
     // if turn = 1, white; turn = 2, black
     public void handleCellClick(int clickedCol, int clickedRow) {
-        // System.out.println("Highlighting if there is a king in check");
-        // highlightKingInCheck();
-    
         if (turn == 1) {
-            //if it is the start of the turn
+            // if it is the start of the turn
             if (selectedRow == -1 && selectedCol == -1) {
                 if (model.getPieceAt(clickedCol, clickedRow) != null
                         && model.getPieceAt(clickedCol, clickedRow).color == Color.WHITE) {
@@ -31,23 +28,18 @@ public class PlayingController {
             } else {
                 if (model.movePiece(selectedCol, selectedRow, clickedCol, clickedRow)) {
                     view.refreshPieces();
-                    if (model.isCheckmate(Color.BLACK)) {
-                        view.showInvalidMoveMessage("White wins by checkmate!");
-                        endGame();
-                        return;
-                    }
                     turn = 2;
                 } else {
-                    if (model.moveNotResolveCheck) {
-                        view.showInvalidMoveMessage("Move does not resolve check.");
-                    } else {
-                        view.showInvalidMoveMessage("Invalid Move. Try Again.");
-                    }
+                    view.showInvalidMoveMessage("Invalid Move. Try Again.");
                 }
-    
                 selectedRow = -1;
                 selectedCol = -1;
                 view.clearHighlights();
+                view.showInvalidMoveMessage("Black Piece's Turn");
+                if (model.getKing(Color.BLACK).inCheck(model.board)) {
+                    System.out.println("Black is in check");
+                    view.highlightCell(model.getKing(Color.BLACK).row, model.getKing(Color.BLACK).column, Color.red);
+                }
             }
         } else if (turn == 2) {
             if (selectedRow == -1 && selectedCol == -1) {
@@ -60,41 +52,33 @@ public class PlayingController {
             } else {
                 if (model.movePiece(selectedCol, selectedRow, clickedCol, clickedRow)) {
                     view.refreshPieces();
-                    if (model.isCheckmate(Color.WHITE)) {
-                        view.showInvalidMoveMessage("Black wins by checkmate!");
-                        endGame();
-                        return;
-                    }
                     turn = 1;
                 } else {
-                    if (model.moveNotResolveCheck) {
-                        view.showInvalidMoveMessage("Move does not resolve check.");
-                    } else {
-                        view.showInvalidMoveMessage("Invalid Move. Try Again.");
-                    }
+                    view.showInvalidMoveMessage("Invalid Move. Try Again.");
                 }
-    
                 selectedRow = -1;
                 selectedCol = -1;
                 view.clearHighlights();
+                view.showInvalidMoveMessage("White Piece's Turn");
+                if (model.getKing(Color.WHITE).inCheck(model.board)) {
+                    System.out.println("White is in check");
+                    view.highlightCell(model.getKing(Color.WHITE).row, model.getKing(Color.WHITE).column, Color.red);
+                }
             }
         }
-    
-        highlightKingInCheck();
+        if (model.getKing(Color.BLACK) == null) {
+            System.out.println("White wins!");
+            view.showInvalidMoveMessage("White wins!");
+            endGame();
+        }
+        if (model.getKing(Color.WHITE) == null) {
+            System.out.println("Black wins!");
+            view.showInvalidMoveMessage("Black wins!");
+            endGame();
+        }
     }
-    
+
     private void endGame() {
-        // Logic to end the game, e.g., disable input or close the application
-        System.exit(0); // Example: End the program
-    }
-
-    private void highlightKingInCheck() {
-        if (model.getPieceAt(model.whiteKingCol, model.whiteKingRow).isInCheck) {
-            view.highlightCell(model.whiteKingRow, model.whiteKingCol, Color.RED);
-        }
-
-        if (model.getPieceAt(model.blackKingCol, model.blackKingRow).isInCheck) {
-            view.highlightCell(model.blackKingRow, model.blackKingCol, Color.RED);
-        }
+        System.exit(0);
     }
 }

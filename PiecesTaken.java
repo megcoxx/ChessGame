@@ -6,13 +6,13 @@ public class PiecesTaken {
     Color playerColor;
     int count;
 
-    PiecesTaken(Color color){
+    PiecesTaken(Color color) {
         playerColor = color;
         piecesTaken = new ArrayList<PlayingPieceComponent>();
         count = 0;
     }
 
-    public void addPiece(PlayingPieceComponent piece){
+    public void addPiece(PlayingPieceComponent piece) {
         piecesTaken.add(piece);
         count++;
     }

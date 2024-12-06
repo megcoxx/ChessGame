@@ -4,7 +4,7 @@ import javax.swing.ImageIcon;
 
 public class Bishop extends PlayingPieceComponent {
     public Bishop(Color color) {
-        super(50, 50, color);
+        super(color);
         name = "Bishop";
         if (color == Color.BLACK) {
             pieceDisplay = new ImageIcon("images/BishopBlack.png").getImage();
@@ -137,5 +137,10 @@ public class Bishop extends PlayingPieceComponent {
                 return false;
             }
         }
+    }
+
+    @Override
+    public Bishop clone() {
+        return new Bishop(this.color);
     }
 }

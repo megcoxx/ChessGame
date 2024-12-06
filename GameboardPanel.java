@@ -2,24 +2,24 @@
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import javax.swing.*;
 
 public class GameboardPanel extends JPanel {
-    PlayingPieceComponent player1, player2;
     JPanel[][] cells;
     ChessModel model;
     PlayingController controller;
-
+    JPanel blackPiecesTaken, whitePiecesTaken;
 
     public GameboardPanel(ChessModel model) {
         this.model = model;
         this.controller = new PlayingController(model, this);
-        player1 = new PlayingPieceComponent(50, 50, Color.RED);
-        player2 = new PlayingPieceComponent(50, 50, Color.BLUE);
         cells = new JPanel[8][8];
 
-        setLayout((LayoutManager) new GridLayout(8, 8));
+        setLayout(new BorderLayout());
+
+        JPanel boardPanel = new JPanel(new GridLayout(8, 8));
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
                 JPanel panel = new JPanel();
@@ -30,19 +30,31 @@ public class GameboardPanel extends JPanel {
                     panel.setBackground(Color.DARK_GRAY);
                 }
 
-                add(panel);
+                boardPanel.add(panel);
                 cells[row][col] = panel;
             }
         }
+
+        whitePiecesTaken = new JPanel();
+        whitePiecesTaken.setLayout(new FlowLayout());
+        whitePiecesTaken.setBorder((BorderFactory.createTitledBorder("White Pieces Taken:")));
+        blackPiecesTaken = new JPanel();
+        blackPiecesTaken.setLayout(new FlowLayout());
+        blackPiecesTaken.setBorder((BorderFactory.createTitledBorder("Black Pieces Taken:")));
+
+        add(whitePiecesTaken, BorderLayout.NORTH);
+        add(createRowLabels(), BorderLayout.WEST);
+        add(boardPanel, BorderLayout.CENTER);
+        add(createRowLabels(), BorderLayout.EAST);
+        add(blackPiecesTaken, BorderLayout.SOUTH);
+
         refreshPieces();
-        addMouseListener(new MouseAdapter() {
+        boardPanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                // Calculate which cell was clicked based on mouse coordinates
-                int clickedRow = e.getY() / (getHeight() / 8);
-                int clickedCol = e.getX() / (getWidth() / 8);
+                int clickedRow = e.getY() / (boardPanel.getHeight() / 8);
+                int clickedCol = e.getX() / (boardPanel.getWidth() / 8);
 
-                // Send the click event to the controller for handling
                 controller.handleCellClick(clickedCol, clickedRow);
             }
         });
@@ -60,8 +72,42 @@ public class GameboardPanel extends JPanel {
                 }
             }
         }
+        updatePiecesCaptured();
         revalidate();
         repaint();
+    }
+
+    private void updatePiecesCaptured() {
+        whitePiecesTaken.removeAll();
+        blackPiecesTaken.removeAll();
+
+        ArrayList<PlayingPieceComponent> whiteCaptured = model.whitePlayer.piecesTaken;
+        ArrayList<PlayingPieceComponent> blackCaptured = model.blackPlayer.piecesTaken;
+
+        for (PlayingPieceComponent piece : blackCaptured) {
+            JLabel pieceLabel = new JLabel(new ImageIcon(piece.pieceDisplay));
+            whitePiecesTaken.add(pieceLabel);
+        }
+
+        for (PlayingPieceComponent piece : whiteCaptured) {
+            JLabel pieceLabel = new JLabel(new ImageIcon(piece.pieceDisplay));
+            blackPiecesTaken.add(pieceLabel);
+        }
+
+        whitePiecesTaken.revalidate();
+        whitePiecesTaken.repaint();
+        blackPiecesTaken.revalidate();
+        blackPiecesTaken.repaint();
+    }
+
+    private JPanel createRowLabels() {
+        JPanel rowPanel = new JPanel(new GridLayout(8, 1));
+        rowPanel.setPreferredSize(new Dimension(20, 400));
+        for (int i = 8; i >= 1; i--) {
+            JLabel label = new JLabel(String.valueOf(i), SwingConstants.CENTER);
+            rowPanel.add(label);
+        }
+        return rowPanel;
     }
 
     public void highlightCell(int col, int row, Color color) {
@@ -72,7 +118,7 @@ public class GameboardPanel extends JPanel {
         JOptionPane.showMessageDialog(
                 this,
                 message,
-                "Error",
+                "Message",
                 JOptionPane.INFORMATION_MESSAGE);
     }
 
